@@ -7,7 +7,6 @@ export const api = (
   credentials = null,
 ) => {
   const url = baseURL + path;
-  console.log(url)
   const options = {
     method,
     headers: {},
