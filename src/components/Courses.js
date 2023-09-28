@@ -19,13 +19,17 @@ const Courses = () => {
     fetchCourses()
   }, [])
 
+  const CourseListing = courses.map(course => <CourseCard course={course} key={course.id} />)
+
   return (
     <div className="wrap main--grid">
       {
         loading ? <p><strong>Loading...</strong></p> : 
-        courses.map(course => <CourseCard course={course} key={course.id} />)
+        <>
+          {CourseListing}
+          <CourseAddCard />
+        </>
       }
-      <CourseAddCard />
     </div>
   )
 }
