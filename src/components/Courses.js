@@ -22,15 +22,17 @@ const Courses = () => {
   const CourseListing = courses.map(course => <CourseCard course={course} key={course.id} />)
 
   return (
-    <div className="wrap main--grid">
-      {
-        loading ? <p><strong>Loading...</strong></p> : 
-        <>
-          {CourseListing}
-          <CourseAddCard />
-        </>
-      }
-    </div>
+    <main>
+      <div className="wrap main--grid">
+        {
+          loading ? <p><strong>Loading...</strong></p> : 
+          <>
+            {CourseListing}
+            <CourseAddCard />
+          </>
+        }
+      </div>
+    </main>
   )
 }
 
