@@ -59,7 +59,7 @@ const CourseDetail = () => {
       }
     }
     fetchCourse(id)
-  }, [authUser, course.user, navigate, id])
+  }, [authUser, navigate, id])
 
   return (
     <main>
