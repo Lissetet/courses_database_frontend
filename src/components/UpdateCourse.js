@@ -10,7 +10,7 @@ const CourseDetail = () => {
   const [course, setCourse] = useState({})
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState([])
-  const { credentials } = useContext(UserContext)
+  const { authUser, credentials } = useContext(UserContext)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -29,7 +29,7 @@ const CourseDetail = () => {
       } else if (res.status === 400) {
         const data = await res.json()
         setErrors(data.errors)
-      } else if (res.status === 401) {
+      } else if (res.status === 401 || res.status === 403) {
         navigate('/forbidden')
       } 
     } catch {
@@ -39,7 +39,10 @@ const CourseDetail = () => {
 
   useEffect(() => {
     fetchCourse(id)
-  }, [id])
+    if (course.user && authUser && course.user.id !== authUser.id) {
+      navigate('/forbidden')
+    }
+  }, [id, navigate, authUser, course.user])
 
   return (
     <main>

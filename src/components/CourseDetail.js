@@ -10,7 +10,8 @@ import Loading from './Loading'
 const CourseDetail = () => {
   const [course, setCourse] = useState({})
   const [loading, setLoading] = useState(true)
-  const { credentials } = useContext(UserContext)
+  const [ownedByUser, setOwnedByUser] = useState(false)
+  const { authUser, credentials } = useContext(UserContext)
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -39,6 +40,7 @@ const CourseDetail = () => {
         const res = await api(`/courses/${id}`)
         const data = await res.json()
         setCourse(data)
+        setOwnedByUser(authUser && authUser.id === data.user.id)
         setLoading(false)
       } catch (error) {
         console.log(error)
@@ -46,14 +48,18 @@ const CourseDetail = () => {
       }
     }
     fetchCourse(id)
-  }, [id, navigate])
+  }, [id, navigate, authUser])
 
   return (
     <main>
         { loading ? <div className="wrap"><Loading /></div> : 
           !course ? <NotFound item="course" /> :
           <>
-            <ActionsBar id={id} handleDelete={handleDelete} />
+            <ActionsBar 
+              id={id} 
+              handleDelete={handleDelete} 
+              ownedByUser={ownedByUser}
+            />
             <div className="wrap">
               <h2>Course Detail</h2>
               <CourseDetailForm {...course}/>
