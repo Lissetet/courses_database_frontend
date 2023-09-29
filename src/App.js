@@ -4,7 +4,10 @@ import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
 import UpdateCourse from './components/UpdateCourse';
-
+import UserSignIn from './components/UserSignIn';
+import NotFound from './components/NotFound';
+import Forbidden from './components/Forbidden';
+import UnhandledError from './components/UnhandledError';
 
 function App() {
 
@@ -15,6 +18,11 @@ function App() {
         <Route path="/" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
         <Route path="/courses/:id/update" element={<UpdateCourse />} />
+        <Route path="/signin" element={<UserSignIn />} />
+        <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/error" element={<UnhandledError />} />
+        <Route path="/notfound" element={<NotFound item="course"/>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
