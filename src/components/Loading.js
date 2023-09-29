@@ -1,6 +1,6 @@
 const Loading = () => {
   return (
-    <div class="loading">
+    <div className="loading">
       <strong>Loading</strong>
       <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24">
         <circle cx="18" cy="12" r="0" fill="currentColor">
