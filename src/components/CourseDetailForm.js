@@ -1,8 +1,9 @@
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+
 const CourseDetailForm = (props) => {
   const { title, description, estimatedTime, materialsNeeded, user } = props;
   const name = `${user.firstName} ${user.lastName}`;
-  const descriptionParagraphs = description.split('\n').filter(p => p !== '');
-  const materialsList = materialsNeeded?.split('*').filter(item => item !== '');
 
   return (
     <form>
@@ -11,16 +12,19 @@ const CourseDetailForm = (props) => {
           <h3 className="course--detail--title">Course</h3>
           <h4 className="course--name">{title}</h4>
           <p>By {name}</p>
-          {descriptionParagraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+          <ReactMarkdown children={description} />
         </div>
         <div>
           <h3 className="course--detail--title">Estimated Time</h3>
           <p>{estimatedTime}</p>
 
           <h3 className="course--detail--title">Materials Needed</h3>
-          <ul className="course--detail--list">
-            {materialsList?.map((item, index) => <li key={index}>{item}</li>)}
-          </ul>
+          <ReactMarkdown 
+            children={materialsNeeded}
+            components={{ ul: ({node, ...props}) => {
+              return <ul {...props} className="course--detail--list"/>
+            }}}
+          />
         </div>
       </div>
     </form>
