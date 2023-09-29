@@ -14,13 +14,6 @@ const CourseDetail = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const fetchCourse = async (id) => {
-    const res = await api(`/courses/${id}`)
-    const data = await res.json()
-    setCourse(data)
-    setLoading(false)
-  }
-
   const onSubmit = async (course) => {
     try {
       const res = await api(`/courses/${id}`, 'PUT', course, credentials)
@@ -38,11 +31,28 @@ const CourseDetail = () => {
   }
 
   useEffect(() => {
-    fetchCourse(id)
-    if (course.user && authUser && course.user.id !== authUser.id) {
-      navigate('/forbidden')
+    const fetchCourse = async (id) => {
+      try {
+        const res = await api(`/courses/${id}`)
+        if (res.status === 200) {
+          const data = await res.json()
+          setCourse(data)
+          setLoading(false)
+          if (authUser && authUser.id !== data?.user.id) {
+            navigate('/forbidden')
+          }
+        } else if (res.status === 404) {
+          navigate('/notfound')
+        } else {
+          throw new Error()
+        }
+      } catch (error) {
+        console.log(error)
+        navigate('/error')
+      }
     }
-  }, [id, navigate, authUser, course.user])
+    fetchCourse(id)
+  }, [authUser, course.user, navigate, id])
 
   return (
     <main>
