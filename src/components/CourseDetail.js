@@ -38,10 +38,16 @@ const CourseDetail = () => {
     const fetchCourse = async (id) => {
       try {
         const res = await api(`/courses/${id}`)
-        const data = await res.json()
-        setCourse(data)
-        setOwnedByUser(authUser && authUser.id === data?.user.id)
-        setLoading(false)
+        if (res.status === 200) {
+          const data = await res.json()
+          setCourse(data)
+          setOwnedByUser(authUser && authUser.id === data?.user.id)
+          setLoading(false)
+        } else if (res.status === 404) {
+          navigate('/notfound')
+        } else {
+          throw new Error()
+        }
       } catch (error) {
         console.log(error)
         navigate('/error')
