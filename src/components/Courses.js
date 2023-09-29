@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { api } from '../utils/apiHelper'
 import CourseCard from './CourseCard'
 import CourseAddCard from './CourseAddCard'
+import Loading from './Loading'
 
 const Courses = () => {
 
@@ -19,18 +20,14 @@ const Courses = () => {
     fetchCourses()
   }, [])
 
-  const CourseListing = courses.map(course => <CourseCard course={course} key={course.id} />)
+  const CourseListing = 
+    courses.map(course => <CourseCard course={course} key={course.id} />)
 
   return (
     <main>
       <div className="wrap main--grid">
-        {
-          loading ? <p><strong>Loading...</strong></p> : 
-          <>
-            {CourseListing}
-            <CourseAddCard />
-          </>
-        }
+        { loading ? <Loading /> : 
+          <> {CourseListing}<CourseAddCard /> </> }
       </div>
     </main>
   )

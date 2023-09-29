@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../utils/apiHelper'
 import CourseUpdateForm from './CourseUpdateForm'
+import Loading from './Loading'
 
 const CourseDetail = () => {
   const [course, setCourse] = useState({})
@@ -32,10 +33,8 @@ const CourseDetail = () => {
     <main>
       <div className="wrap">
         <h2>Update Course</h2>
-        { 
-          loading ? <p><strong>Loading...</strong></p> : 
-          <CourseUpdateForm {...course} handleUpdate={handleUpdate}/> 
-        }
+        { loading ? <Loading /> : 
+          <CourseUpdateForm {...course} handleUpdate={handleUpdate}/> }
       </div>
     </main>
   );
