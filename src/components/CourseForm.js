@@ -1,27 +1,30 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../context/UserContext';
 
-const CourseDetailForm = (props) => {
-  const { title, description, estimatedTime, materialsNeeded, handleUpdate } = props;
-  const name = `${props.user.firstName} ${props.user.lastName}`;
+const CourseDetailForm = ({course, onSubmit, action}) => {
+  const { authUser } = useContext(UserContext);
+  const name = `${authUser?.firstName} ${authUser?.lastName}`;
   const navigate = useNavigate();
 
-  const titleInput = useRef(null);
-  const descriptionInput = useRef(null);
-  const timeInput = useRef(null);
-  const materialsInput = useRef(null);
+  const title = useRef(null);
+  const description = useRef(null);
+  const time = useRef(null);
+  const materials = useRef(null);
 
-  const onCancel = () => navigate(`/courses/${props.id}`);
+  const onCancel = () => {
+    course?.id ? navigate(`/courses/${course.id}`) : navigate('/');
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const course = {
-      title: titleInput.current.value,
-      description: descriptionInput.current.value,
-      estimatedTime: timeInput.current.value,
-      materialsNeeded: materialsInput.current.value
+      title: title.current.value,
+      description: description.current.value,
+      estimatedTime: time.current.value || null,
+      materialsNeeded: materials.current.value || null
     }
-    handleUpdate(course);
+    onSubmit(course);
   }
 
   return (
@@ -33,8 +36,8 @@ const CourseDetailForm = (props) => {
             id="courseTitle" 
             name="courseTitle" 
             type="text" 
-            defaultValue={title} 
-            ref={titleInput}
+            defaultValue={course?.title} 
+            ref={title}
           />
           <p>By {name}</p>
 
@@ -42,8 +45,8 @@ const CourseDetailForm = (props) => {
           <textarea 
             id="courseDescription" 
             name="courseDescription" 
-            ref={descriptionInput} 
-            defaultValue={description}
+            ref={description} 
+            defaultValue={course?.description}
           />
         </div>
         <div>
@@ -52,20 +55,22 @@ const CourseDetailForm = (props) => {
             id="estimatedTime" 
             name="estimatedTime" 
             type="text" 
-            defaultValue={estimatedTime} 
-            ref={timeInput}
+            defaultValue={course?.estimatedTime} 
+            ref={time}
           />
 
           <label htmlFor="materialsNeeded">Materials Needed</label>
           <textarea 
             id="materialsNeeded" 
             name="materialsNeeded" 
-            ref={materialsInput} 
-            defaultValue={materialsNeeded}
+            ref={materials} 
+            defaultValue={course?.materialsNeeded}
           />
         </div>
       </div>
-      <button className="button" onClick={handleSubmit} type="submit">Update Course</button>
+      <button className="button" onClick={handleSubmit} type="submit">
+        {action} Course
+      </button>
       <button className="button button-secondary" onClick={onCancel}>Cancel</button>
     </form>
   )

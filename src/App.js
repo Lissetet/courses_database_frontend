@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Courses from './components/Courses';
 import CourseDetail from './components/CourseDetail';
+import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignIn from './components/UserSignIn';
 import UserSignOut from './components/UserSignOut';
@@ -18,6 +19,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Courses />} />
+        <Route path="/courses/create" element={<CreateCourse />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
         <Route path="/courses/:id/update" element={<UpdateCourse />} />
         <Route path="/signin" element={<UserSignIn />} />
