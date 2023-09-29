@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../utils/apiHelper'
-import UserContext from '../context/UserContext'
 import CourseCard from './CourseCard'
 import CourseAddCard from './CourseAddCard'
 import Loading from './Loading'
@@ -10,7 +9,6 @@ const Courses = () => {
   const [courses, setCourses] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const { authUser } = useContext(UserContext);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -34,8 +32,7 @@ const Courses = () => {
   return (
     <main>
       <div className="wrap main--grid">
-        { loading ? <Loading /> : <>{CourseListing}</> }
-        { (!loading && authUser) ? <CourseAddCard /> : null }
+        { loading ? <Loading /> : <>{CourseListing}<CourseAddCard /></> }
       </div>
     </main>
   )
