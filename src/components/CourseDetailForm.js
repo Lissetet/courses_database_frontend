@@ -22,6 +22,7 @@ const CourseDetailForm = (props) => {
           <ReactMarkdown 
             children={materialsNeeded}
             components={{ ul: ({node, ...props}) => {
+              // Add a className to the ul element
               return <ul {...props} className="course--detail--list"/>
             }}}
           />

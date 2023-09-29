@@ -8,14 +8,12 @@ const UserSignIn = () => {
   const { actions } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // State
   const firstName = useRef(null);
   const lastName = useRef(null);
   const emailAddress = useRef(null);
   const password = useRef(null);
   const [errors, setErrors] = useState([]);
 
-  // event handlers
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = {
@@ -25,8 +23,9 @@ const UserSignIn = () => {
       password: password.current.value
     }
 
-    console.log(JSON.stringify(user));
-
+    // API call to create the user. If successful, sign in the user and redirect to the home page
+    // If the api call returns a 400 status code, set the errors state
+    // If there is a server error, redirect to the error page
     try {
       const res = await api('/users', 'POST', user);
       if (res.status === 201) {

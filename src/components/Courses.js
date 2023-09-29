@@ -12,6 +12,8 @@ const Courses = () => {
 
   useEffect(() => {
     const fetchCourses = async () => {
+      // API call to get all courses. If successful, set the courses state
+      // If there is a server error, redirect to the error page
       try {
         const res = await api('/courses')
         const data = await res.json()
@@ -26,6 +28,7 @@ const Courses = () => {
     fetchCourses()
   }, [navigate])
 
+  // Map over the courses array and create a CourseCard component for each course
   const CourseListing = 
     courses.map(course => <CourseCard course={course} key={course.id} />)
 

@@ -13,6 +13,10 @@ const CourseDetail = () => {
 
   const onSubmit = async (course) => {
     course.userId = userId;
+
+    // API call to create the course. If successful, redirect to the course detail page
+    // If the user is not authorized, redirect to the forbidden page
+    // If there is a server error, redirect to the error page
     try {
       const res = await api(`/courses`, 'POST', course, credentials, true)
       if (res.status === 201) {
@@ -35,7 +39,8 @@ const CourseDetail = () => {
     <main>
       <div className="wrap">
         <h2>Create Course</h2>
-        { errors.length ? <ErrorsDisplay errors={errors}/> : null }
+        { // Conditional rendering of the ErrorsDisplay component
+          errors.length ? <ErrorsDisplay errors={errors}/> : null }
         <CourseForm onSubmit={onSubmit} action="Create"/>
       </div>
     </main>

@@ -23,6 +23,8 @@ const UserSignIn = () => {
       password: password.current.value
     }
 
+    // API call to sign in the user. If successful, redirect to the previous page
+    // If the user is not found, set the errors state
     try {
       const user = await actions.signIn(credentials);
       user ? navigate(from) : setErrors(['Sign-in was unsuccessful']);
@@ -41,7 +43,8 @@ const UserSignIn = () => {
     <main>
       <div className="form--centered">
         <h2>Sign In</h2>
-          { errors.length ? <ErrorsDisplay errors={errors}/> : null }
+          { // Conditional rendering of the ErrorsDisplay component
+            errors.length ? <ErrorsDisplay errors={errors}/> : null }
           <form onSubmit={handleSubmit}>
             <label htmlFor="emailAddress">Email Address</label>
             <input

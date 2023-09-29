@@ -16,9 +16,13 @@ const CourseDetail = () => {
   const navigate = useNavigate()
 
   const handleDelete = async () => {
+    // Confirm with the user that they want to delete the course
     const confirmDelete = window.confirm('Are you sure you want to delete this course?')
     if (!confirmDelete) return
 
+    // API call to delete the course. If successful, redirect to the home page
+    // If the user is not authorized, redirect to the forbidden page
+    // If there is a server error, redirect to the error page
     try {
       const res = await api(`/courses/${id}`, 'DELETE', null, credentials)
       if (res.status === 204) {
@@ -36,6 +40,9 @@ const CourseDetail = () => {
 
   useEffect(() => {
     const fetchCourse = async (id) => {
+      // API call to get the course. If successful, set the course state
+      // If the course is not found, redirect to the not found page
+      // If there is a server error, redirect to the error page
       try {
         const res = await api(`/courses/${id}`)
         if (res.status === 200) {

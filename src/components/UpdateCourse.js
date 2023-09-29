@@ -16,6 +16,9 @@ const CourseDetail = () => {
 
   const onSubmit = async (course) => {
     try {
+      // API call to update the course. If successful, redirect to the course detail page
+      // If the user is not authorized, redirect to the forbidden page
+      // If there is a server error, redirect to the error page
       const res = await api(`/courses/${id}`, 'PUT', course, credentials)
       if (res.status === 204) {
         navigate(`/courses/${id}`)
@@ -32,6 +35,10 @@ const CourseDetail = () => {
 
   useEffect(() => {
     const fetchCourse = async (id) => {
+      // API call to get the course. If successful, set the course state
+      // If the user is not authorized, redirect to the forbidden page
+      // If the course is not found, redirect to the not found page
+      // If there is a server error, redirect to the error page
       try {
         const res = await api(`/courses/${id}`)
         if (res.status === 200) {
@@ -58,7 +65,8 @@ const CourseDetail = () => {
     <main>
       <div className="wrap">
         <h2>Update Course</h2>
-        { errors.length ? <ErrorsDisplay errors={errors}/> : null }
+        { // Conditional rendering of the ErrorsDisplay component
+          errors.length ? <ErrorsDisplay errors={errors}/> : null }
         { loading ? <Loading /> : 
           <CourseForm 
             course={course} 

@@ -8,17 +8,21 @@ const Nav = () => {
 
   return (
     <nav>
-      { !authUser ? (
-        <ul className="header--signedout">
-          <li><Link to="/signup">Sign Up</Link></li>
-          <li><Link to="/signin">Sign In</Link></li>
-        </ul>
-      ) : (
-        <ul className="header--signedin">
-          <li><span>Welcome, {name}!</span></li>
-          <li><Link to="/signout">Sign Out</Link></li>
-        </ul>
-      )}
+      { 
+        // If the user is not authenticated, display the Sign Up and Sign In links
+        // If the user is authenticated, display the Welcome message and Sign Out link
+        !authUser ? (
+          <ul className="header--signedout">
+            <li><Link to="/signup">Sign Up</Link></li>
+            <li><Link to="/signin">Sign In</Link></li>
+          </ul>
+        ) : (
+          <ul className="header--signedin">
+            <li><span>Welcome, {name}!</span></li>
+            <li><Link to="/signout">Sign Out</Link></li>
+          </ul>
+        )
+      }
     </nav>
   );
 }
