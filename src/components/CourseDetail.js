@@ -1,36 +1,65 @@
-import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { api } from '../utils/apiHelper'
+import UserContext from '../context/UserContext'
 import ActionsBar from './ActionsBar'
 import CourseDetailForm from './CourseDetailForm'
+import NotFound from './NotFound'
+import Loading from './Loading'
 
 const CourseDetail = () => {
   const [course, setCourse] = useState({})
   const [loading, setLoading] = useState(true)
+  const { credentials } = useContext(UserContext)
   const { id } = useParams()
-
-  const fetchCourse = async (id) => {
-    const res = await api(`/courses/${id}`)
-    const data = await res.json()
-    setCourse(data)
-    setLoading(false)
-  }
+  const navigate = useNavigate()
 
   const handleDelete = async () => {
-    console.log('deleting')
+    const confirmDelete = window.confirm('Are you sure you want to delete this course?')
+    if (!confirmDelete) return
+
+    try {
+      const res = await api(`/courses/${id}`, 'DELETE', null, credentials)
+      if (res.status === 204) {
+        navigate('/')
+      } else if (res.status === 401) {
+        navigate('/forbidden')
+      } else {
+        throw new Error()
+      }
+    } catch (error) {
+      console.log(error)
+      navigate('/error')
+    }
   }
 
   useEffect(() => {
+    const fetchCourse = async (id) => {
+      try {
+        const res = await api(`/courses/${id}`)
+        const data = await res.json()
+        setCourse(data)
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+        navigate('/error')
+      }
+    }
     fetchCourse(id)
-  }, [id])
+  }, [id, navigate])
 
   return (
     <main>
-      <ActionsBar id={id} handleDelete={handleDelete} />
-      <div className="wrap">
-        <h2>Course Detail</h2>
-        { loading ? <p><strong>Loading...</strong></p> : <CourseDetailForm {...course} /> }
-      </div>
+        { loading ? <div className="wrap"><Loading /></div> : 
+          !course ? <NotFound item="course" /> :
+          <>
+            <ActionsBar id={id} handleDelete={handleDelete} />
+            <div className="wrap">
+              <h2>Course Detail</h2>
+              <CourseDetailForm {...course}/>
+            </div>
+          </>
+        }
     </main>
   );
 };
