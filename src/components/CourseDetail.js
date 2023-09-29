@@ -40,7 +40,7 @@ const CourseDetail = () => {
         const res = await api(`/courses/${id}`)
         const data = await res.json()
         setCourse(data)
-        setOwnedByUser(authUser && authUser.id === data.user.id)
+        setOwnedByUser(authUser && authUser.id === data?.user.id)
         setLoading(false)
       } catch (error) {
         console.log(error)
